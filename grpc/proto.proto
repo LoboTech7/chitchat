@@ -1,7 +1,7 @@
 syntax = "proto3";
 option go_package = "chitchat/grpc";
 
-message UserMessage{
+message Message{
     repeated int32 time_stamp = 1; //timestamp - list of int
     int32 user_id = 2;
     string message = 3; 
@@ -19,5 +19,5 @@ message Empty{
 service Chitchat{
     rpc Join (Empty) returns (User); // when a user joins, they send a empty and receives a user_id
     rpc Leave (User) returns (Empty); // leave baby
-    rpc Message (UserMessage) returns (Empty); // user sends message and dont receive anything back ofc
+    rpc PostMessage (Message) returns (Empty); // user sends message and dont receive anything back ofc
 }
