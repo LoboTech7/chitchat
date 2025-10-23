@@ -21,7 +21,7 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-type UserMessage struct {
+type Message struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	TimeStamp     []int32                `protobuf:"varint,1,rep,packed,name=time_stamp,json=timeStamp,proto3" json:"time_stamp,omitempty"` //timestamp - list of int
 	UserId        int32                  `protobuf:"varint,2,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
@@ -30,20 +30,20 @@ type UserMessage struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *UserMessage) Reset() {
-	*x = UserMessage{}
+func (x *Message) Reset() {
+	*x = Message{}
 	mi := &file_proto_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *UserMessage) String() string {
+func (x *Message) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*UserMessage) ProtoMessage() {}
+func (*Message) ProtoMessage() {}
 
-func (x *UserMessage) ProtoReflect() protoreflect.Message {
+func (x *Message) ProtoReflect() protoreflect.Message {
 	mi := &file_proto_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -55,26 +55,26 @@ func (x *UserMessage) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use UserMessage.ProtoReflect.Descriptor instead.
-func (*UserMessage) Descriptor() ([]byte, []int) {
+// Deprecated: Use Message.ProtoReflect.Descriptor instead.
+func (*Message) Descriptor() ([]byte, []int) {
 	return file_proto_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *UserMessage) GetTimeStamp() []int32 {
+func (x *Message) GetTimeStamp() []int32 {
 	if x != nil {
 		return x.TimeStamp
 	}
 	return nil
 }
 
-func (x *UserMessage) GetUserId() int32 {
+func (x *Message) GetUserId() int32 {
 	if x != nil {
 		return x.UserId
 	}
 	return 0
 }
 
-func (x *UserMessage) GetMessage() string {
+func (x *Message) GetMessage() string {
 	if x != nil {
 		return x.Message
 	}
@@ -173,8 +173,8 @@ var File_proto_proto protoreflect.FileDescriptor
 
 const file_proto_proto_rawDesc = "" +
 	"\n" +
-	"\vproto.proto\"_\n" +
-	"\vUserMessage\x12\x1d\n" +
+	"\vproto.proto\"[\n" +
+	"\aMessage\x12\x1d\n" +Post
 	"\n" +
 	"time_stamp\x18\x01 \x03(\x05R\ttimeStamp\x12\x17\n" +
 	"\auser_id\x18\x02 \x01(\x05R\x06userId\x12\x18\n" +
@@ -187,7 +187,7 @@ const file_proto_proto_rawDesc = "" +
 	"\bChitchat\x12\x15\n" +
 	"\x04Join\x12\x06.Empty\x1a\x05.User\x12\x16\n" +
 	"\x05Leave\x12\x05.User\x1a\x06.Empty\x12\x1f\n" +
-	"\aMessage\x12\f.UserMessage\x1a\x06.EmptyB\x0fZ\rchitchat/grpcb\x06proto3"
+	"\vPostMessage\x12\b.Message\x1a\x06.EmptyB\x0fZ\rchitchat/grpcb\x06proto3"
 
 var (
 	file_proto_proto_rawDescOnce sync.Once
@@ -203,17 +203,17 @@ func file_proto_proto_rawDescGZIP() []byte {
 
 var file_proto_proto_msgTypes = make([]protoimpl.MessageInfo, 3)
 var file_proto_proto_goTypes = []any{
-	(*UserMessage)(nil), // 0: UserMessage
-	(*User)(nil),        // 1: User
-	(*Empty)(nil),       // 2: Empty
+	(*Message)(nil), // 0: Message
+	(*User)(nil),    // 1: User
+	(*Empty)(nil),   // 2: Empty
 }
 var file_proto_proto_depIdxs = []int32{
 	2, // 0: Chitchat.Join:input_type -> Empty
 	1, // 1: Chitchat.Leave:input_type -> User
-	0, // 2: Chitchat.Message:input_type -> UserMessage
+	0, // 2: Chitchat.Message:input_type -> Message
 	1, // 3: Chitchat.Join:output_type -> User
 	2, // 4: Chitchat.Leave:output_type -> Empty
-	2, // 5: Chitchat.Message:output_type -> Empty
+	2, // 5: Chitchat.PostMessage:output_type -> Empty
 	3, // [3:6] is the sub-list for method output_type
 	0, // [0:3] is the sub-list for method input_type
 	0, // [0:0] is the sub-list for extension type_name

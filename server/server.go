@@ -70,3 +70,8 @@ func (s *chitchatService) Leave(ctx context.Context, in *proto.User) (*proto.Emp
 	s.users = append(s.users[:index], s.users[index+1:]...) //
 	return &proto.Empty{}, nil
 }
+
+func (s *chitchatService) PostMessage(ctx context.Context, in *proto.Message) (*proto.Empty, error) {
+
+	return &proto.Empty{}, nil
+}

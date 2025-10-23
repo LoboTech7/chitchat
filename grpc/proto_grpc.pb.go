@@ -19,9 +19,9 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	Chitchat_Join_FullMethodName    = "/Chitchat/Join"
-	Chitchat_Leave_FullMethodName   = "/Chitchat/Leave"
-	Chitchat_Message_FullMethodName = "/Chitchat/Message"
+	Chitchat_Join_FullMethodName        = "/Chitchat/Join"
+	Chitchat_Leave_FullMethodName       = "/Chitchat/Leave"
+	Chitchat_PostMessage_FullMethodName = "/Chitchat/PostMessage"
 )
 
 // ChitchatClient is the client API for Chitchat service.
@@ -30,7 +30,7 @@ const (
 type ChitchatClient interface {
 	Join(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*User, error)
 	Leave(ctx context.Context, in *User, opts ...grpc.CallOption) (*Empty, error)
-	Message(ctx context.Context, in *UserMessage, opts ...grpc.CallOption) (*Empty, error)
+	PostMessage(ctx context.Context, in *Message, opts ...grpc.CallOption) (*Empty, error)
 }
 
 type chitchatClient struct {
@@ -61,10 +61,10 @@ func (c *chitchatClient) Leave(ctx context.Context, in *User, opts ...grpc.CallO
 	return out, nil
 }
 
-func (c *chitchatClient) Message(ctx context.Context, in *UserMessage, opts ...grpc.CallOption) (*Empty, error) {
+func (c *chitchatClient) PostMessage(ctx context.Context, in *Message, opts ...grpc.CallOption) (*Empty, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(Empty)
-	err := c.cc.Invoke(ctx, Chitchat_Message_FullMethodName, in, out, cOpts...)
+	err := c.cc.Invoke(ctx, Chitchat_PostMessage_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -77,7 +77,7 @@ func (c *chitchatClient) Message(ctx context.Context, in *UserMessage, opts ...g
 type ChitchatServer interface {
 	Join(context.Context, *Empty) (*User, error)
 	Leave(context.Context, *User) (*Empty, error)
-	Message(context.Context, *UserMessage) (*Empty, error)
+	PostMessage(context.Context, *Message) (*Empty, error)
 	mustEmbedUnimplementedChitchatServer()
 }
 
@@ -94,8 +94,8 @@ func (UnimplementedChitchatServer) Join(context.Context, *Empty) (*User, error) 
 func (UnimplementedChitchatServer) Leave(context.Context, *User) (*Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Leave not implemented")
 }
-func (UnimplementedChitchatServer) Message(context.Context, *UserMessage) (*Empty, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method Message not implemented")
+func (UnimplementedChitchatServer) PostMessage(context.Context, *Message) (*Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method PostMessage not implemented")
 }
 func (UnimplementedChitchatServer) mustEmbedUnimplementedChitchatServer() {}
 func (UnimplementedChitchatServer) testEmbeddedByValue()                  {}
@@ -154,20 +154,20 @@ func _Chitchat_Leave_Handler(srv interface{}, ctx context.Context, dec func(inte
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Chitchat_Message_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(UserMessage)
+func _Chitchat_PostMessage_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(Message)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(ChitchatServer).Message(ctx, in)
+		return srv.(ChitchatServer).PostMessage(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: Chitchat_Message_FullMethodName,
+		FullMethod: Chitchat_PostMessage_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ChitchatServer).Message(ctx, req.(*UserMessage))
+		return srv.(ChitchatServer).PostMessage(ctx, req.(*Message))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -188,8 +188,8 @@ var Chitchat_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _Chitchat_Leave_Handler,
 		},
 		{
-			MethodName: "Message",
-			Handler:    _Chitchat_Message_Handler,
+			MethodName: "PostMessage",
+			Handler:    _Chitchat_PostMessage_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
