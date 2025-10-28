@@ -1,22 +1,24 @@
 syntax = "proto3";
 option go_package = "chitchat/grpc";
 
-message Message{
+message Message {
     repeated int32 time_stamp = 1; //timestamp - list of int
-    string username = 2; 
+    int32 user_id = 2; 
     string text = 3; 
+    bool status_update = 4;
 }
 
-message User{
+message User {
     repeated int32 time_stamp = 1;
-    string username = 2; 
+    int32 id = 2; 
 }
 
-message Empty{
+message Empty {
     // if a user joins the server 
 }
 
-service Chitchat{
+service Chitchat {
+    rpc GetUserID (Empty) returns (User);
     rpc Join (User) returns (stream Message); // when a user joins, they send a empty and receives a user_id
     rpc Leave (User) returns (Empty); // leave baby
     rpc PostMessage (Message) returns (Empty); // user sends message and dont receive anything back ofc

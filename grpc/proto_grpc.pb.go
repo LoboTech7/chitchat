@@ -19,6 +19,7 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
+	Chitchat_GetUserID_FullMethodName   = "/Chitchat/GetUserID"
 	Chitchat_Join_FullMethodName        = "/Chitchat/Join"
 	Chitchat_Leave_FullMethodName       = "/Chitchat/Leave"
 	Chitchat_PostMessage_FullMethodName = "/Chitchat/PostMessage"
@@ -28,6 +29,7 @@ const (
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type ChitchatClient interface {
+	GetUserID(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*User, error)
 	Join(ctx context.Context, in *User, opts ...grpc.CallOption) (grpc.ServerStreamingClient[Message], error)
 	Leave(ctx context.Context, in *User, opts ...grpc.CallOption) (*Empty, error)
 	PostMessage(ctx context.Context, in *Message, opts ...grpc.CallOption) (*Empty, error)
@@ -39,6 +41,16 @@ type chitchatClient struct {
 
 func NewChitchatClient(cc grpc.ClientConnInterface) ChitchatClient {
 	return &chitchatClient{cc}
+}
+
+func (c *chitchatClient) GetUserID(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*User, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(User)
+	err := c.cc.Invoke(ctx, Chitchat_GetUserID_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
 }
 
 func (c *chitchatClient) Join(ctx context.Context, in *User, opts ...grpc.CallOption) (grpc.ServerStreamingClient[Message], error) {
@@ -84,6 +96,7 @@ func (c *chitchatClient) PostMessage(ctx context.Context, in *Message, opts ...g
 // All implementations must embed UnimplementedChitchatServer
 // for forward compatibility.
 type ChitchatServer interface {
+	GetUserID(context.Context, *Empty) (*User, error)
 	Join(*User, grpc.ServerStreamingServer[Message]) error
 	Leave(context.Context, *User) (*Empty, error)
 	PostMessage(context.Context, *Message) (*Empty, error)
@@ -97,6 +110,9 @@ type ChitchatServer interface {
 // pointer dereference when methods are called.
 type UnimplementedChitchatServer struct{}
 
+func (UnimplementedChitchatServer) GetUserID(context.Context, *Empty) (*User, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetUserID not implemented")
+}
 func (UnimplementedChitchatServer) Join(*User, grpc.ServerStreamingServer[Message]) error {
 	return status.Errorf(codes.Unimplemented, "method Join not implemented")
 }
@@ -125,6 +141,24 @@ func RegisterChitchatServer(s grpc.ServiceRegistrar, srv ChitchatServer) {
 		t.testEmbeddedByValue()
 	}
 	s.RegisterService(&Chitchat_ServiceDesc, srv)
+}
+
+func _Chitchat_GetUserID_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(Empty)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ChitchatServer).GetUserID(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Chitchat_GetUserID_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ChitchatServer).GetUserID(ctx, req.(*Empty))
+	}
+	return interceptor(ctx, in, info, handler)
 }
 
 func _Chitchat_Join_Handler(srv interface{}, stream grpc.ServerStream) error {
@@ -181,6 +215,10 @@ var Chitchat_ServiceDesc = grpc.ServiceDesc{
 	ServiceName: "Chitchat",
 	HandlerType: (*ChitchatServer)(nil),
 	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "GetUserID",
+			Handler:    _Chitchat_GetUserID_Handler,
+		},
 		{
 			MethodName: "Leave",
 			Handler:    _Chitchat_Leave_Handler,

@@ -24,8 +24,9 @@ const (
 type Message struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	TimeStamp     []int32                `protobuf:"varint,1,rep,packed,name=time_stamp,json=timeStamp,proto3" json:"time_stamp,omitempty"` //timestamp - list of int
-	Username      string                 `protobuf:"bytes,2,opt,name=username,proto3" json:"username,omitempty"`
+	UserId        int32                  `protobuf:"varint,2,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
 	Text          string                 `protobuf:"bytes,3,opt,name=text,proto3" json:"text,omitempty"`
+	StatusUpdate  bool                   `protobuf:"varint,4,opt,name=status_update,json=statusUpdate,proto3" json:"status_update,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -67,11 +68,11 @@ func (x *Message) GetTimeStamp() []int32 {
 	return nil
 }
 
-func (x *Message) GetUsername() string {
+func (x *Message) GetUserId() int32 {
 	if x != nil {
-		return x.Username
+		return x.UserId
 	}
-	return ""
+	return 0
 }
 
 func (x *Message) GetText() string {
@@ -81,10 +82,17 @@ func (x *Message) GetText() string {
 	return ""
 }
 
+func (x *Message) GetStatusUpdate() bool {
+	if x != nil {
+		return x.StatusUpdate
+	}
+	return false
+}
+
 type User struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	TimeStamp     []int32                `protobuf:"varint,1,rep,packed,name=time_stamp,json=timeStamp,proto3" json:"time_stamp,omitempty"`
-	Username      string                 `protobuf:"bytes,2,opt,name=username,proto3" json:"username,omitempty"`
+	Id            int32                  `protobuf:"varint,2,opt,name=id,proto3" json:"id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -126,11 +134,11 @@ func (x *User) GetTimeStamp() []int32 {
 	return nil
 }
 
-func (x *User) GetUsername() string {
+func (x *User) GetId() int32 {
 	if x != nil {
-		return x.Username
+		return x.Id
 	}
-	return ""
+	return 0
 }
 
 type Empty struct {
@@ -173,18 +181,20 @@ var File_proto_proto protoreflect.FileDescriptor
 
 const file_proto_proto_rawDesc = "" +
 	"\n" +
-	"\vproto.proto\"X\n" +
+	"\vproto.proto\"z\n" +
 	"\aMessage\x12\x1d\n" +
 	"\n" +
-	"time_stamp\x18\x01 \x03(\x05R\ttimeStamp\x12\x1a\n" +
-	"\busername\x18\x02 \x01(\tR\busername\x12\x12\n" +
-	"\x04text\x18\x03 \x01(\tR\x04text\"A\n" +
+	"time_stamp\x18\x01 \x03(\x05R\ttimeStamp\x12\x17\n" +
+	"\auser_id\x18\x02 \x01(\x05R\x06userId\x12\x12\n" +
+	"\x04text\x18\x03 \x01(\tR\x04text\x12#\n" +
+	"\rstatus_update\x18\x04 \x01(\bR\fstatusUpdate\"5\n" +
 	"\x04User\x12\x1d\n" +
 	"\n" +
-	"time_stamp\x18\x01 \x03(\x05R\ttimeStamp\x12\x1a\n" +
-	"\busername\x18\x02 \x01(\tR\busername\"\a\n" +
-	"\x05Empty2^\n" +
-	"\bChitchat\x12\x19\n" +
+	"time_stamp\x18\x01 \x03(\x05R\ttimeStamp\x12\x0e\n" +
+	"\x02id\x18\x02 \x01(\x05R\x02id\"\a\n" +
+	"\x05Empty2z\n" +
+	"\bChitchat\x12\x1a\n" +
+	"\tGetUserID\x12\x06.Empty\x1a\x05.User\x12\x19\n" +
 	"\x04Join\x12\x05.User\x1a\b.Message0\x01\x12\x16\n" +
 	"\x05Leave\x12\x05.User\x1a\x06.Empty\x12\x1f\n" +
 	"\vPostMessage\x12\b.Message\x1a\x06.EmptyB\x0fZ\rchitchat/grpcb\x06proto3"
@@ -208,14 +218,16 @@ var file_proto_proto_goTypes = []any{
 	(*Empty)(nil),   // 2: Empty
 }
 var file_proto_proto_depIdxs = []int32{
-	1, // 0: Chitchat.Join:input_type -> User
-	1, // 1: Chitchat.Leave:input_type -> User
-	0, // 2: Chitchat.PostMessage:input_type -> Message
-	0, // 3: Chitchat.Join:output_type -> Message
-	2, // 4: Chitchat.Leave:output_type -> Empty
-	2, // 5: Chitchat.PostMessage:output_type -> Empty
-	3, // [3:6] is the sub-list for method output_type
-	0, // [0:3] is the sub-list for method input_type
+	2, // 0: Chitchat.GetUserID:input_type -> Empty
+	1, // 1: Chitchat.Join:input_type -> User
+	1, // 2: Chitchat.Leave:input_type -> User
+	0, // 3: Chitchat.PostMessage:input_type -> Message
+	1, // 4: Chitchat.GetUserID:output_type -> User
+	0, // 5: Chitchat.Join:output_type -> Message
+	2, // 6: Chitchat.Leave:output_type -> Empty
+	2, // 7: Chitchat.PostMessage:output_type -> Empty
+	4, // [4:8] is the sub-list for method output_type
+	0, // [0:4] is the sub-list for method input_type
 	0, // [0:0] is the sub-list for extension type_name
 	0, // [0:0] is the sub-list for extension extendee
 	0, // [0:0] is the sub-list for field type_name
