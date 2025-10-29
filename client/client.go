@@ -63,7 +63,8 @@ func get_input(reader *bufio.Reader, client proto.ChitchatClient) {
 			log.Fatal(err)
 		}
 		user.TimeStamp[user.Id] += 1
-		input = strings.Trim(input, "\n")
+		input = strings.TrimSpace(input)
+		fmt.Println(strings.Compare(input, ".quit"))
 		if strings.Compare(input, ".quit") == 0 {
 			user.TimeStamp[user.Id] += 1
 			client.Leave(context.Background(), user)
