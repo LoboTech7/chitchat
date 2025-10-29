@@ -6,7 +6,7 @@
 Open a terminal window, change the directory to the `server` folder, and run `go run .`. The server will start listening on port **8080**.
 
 ### Step 2: Start the Clients
-Open at two or more new terminal windows, change the directory to the `client` folder, and run the client using `go run .`. Each client will connect to the server.
+Open new terminal windows for each client, change the directory to the `client` folder, and run the client using `go run .`. Each client will connect to the server.
 
 Once each client connected:
 - You can type any message and send it. All connected clients should display it.
