@@ -16,8 +16,6 @@ Once each client connected:
 - Type `.quit` in all clients.
 - To stop the server, use **Ctrl + C** in the server terminal.
 
----
-
 ## 2. Output and Logs
 - Each client terminal displays received messages and timestamps.  
 - The server records all major events in the **log.txt** file, including start server, join, leave, and message broadcasts.
